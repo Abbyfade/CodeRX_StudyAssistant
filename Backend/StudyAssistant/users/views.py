@@ -5,8 +5,8 @@ from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth import get_user_model
-from .serializers import UserSerializer, UserListSerializer
-from rest_framework.permissions import AllowAny
+from .serializers import UserSerializer, UserDetailSerializer
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.shortcuts import redirect
 
 User = get_user_model()
@@ -39,7 +39,10 @@ class LogoutUserView(APIView):
         logout(request)
         return Response({"message": "Logout successful"}, status=status.HTTP_200_OK)
 
-class UserListView(ListAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserListSerializer
+class UserDetailView(APIView):
+    permission_classes = [IsAuthenticated]
 
+    def get(self, request):
+        user = request.user
+        serializer = UserDetailSerializer(user)
+        return Response(serializer.data)
