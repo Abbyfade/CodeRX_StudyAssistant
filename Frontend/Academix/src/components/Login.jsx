@@ -5,22 +5,35 @@ import { Link } from 'react-router-dom'
 import xbutton from '../assets/xbutton.png'
 
 export const Login = () => {
-    const [userName, setUserName] = useState('')
+    const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
-    const handleUserName = (e) => {
-        setUserName(e.target.value)
+    const handleemail = (e) => {
+        setEmail(e.target.value)
     }
 
     const handlePassword = (event) => {
         setPassword(event.target.value)
     }
 
-    //Details from the form to be submitted
-    // const userInfo = {
-    //     email: email,
-    //     password: password
-    // }
+    // Details from the form to be submitted
+    const userInfo = {
+        email: email,
+        password: password
+    }
+
+    const url = 'URL_GOES_HERE'
+
+    const handleSubmit = async (event) => {
+        event.preventDefault()
+        try {
+            const response = await axios.post(url, userInfo)
+            console.log(response);
+            
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
   return (
     //Page Contents
@@ -33,14 +46,14 @@ export const Login = () => {
 
             <div>
                 <div>
-                    <input autoFocus className='mt-12 border-b-[1px] border-b-black border-solid outline-none py-[10px] w-full' type="text" name="username" id="username" placeholder='E-mail or Username' value={userName} onChange={handleUserName}/>
+                    <input autoFocus className='mt-12 border-b-[1px] border-b-black border-solid outline-none py-[10px] w-full' type="email" name="email" id="email" placeholder='E-mail' value={email} onChange={handleemail}/>
                 </div>
                 <div>
                     <input className='mt-10 border-b-[1px] border-b-black border-solid outline-none py-[10px] w-full' type="password" name="password" id="password" placeholder='Password' value={password} onChange={handlePassword}/>
                 </div>
 
                 <div className='mt-10 text-center'>
-                    <button className='bg-[#183F55] px-6 py-2 text-white text-xl font-medium rounded-lg hover:shadow-[0_4px_50px_1px_rgba(0,0,0,0.25)]'>Login</button>
+                    <button className='bg-[#183F55] px-6 py-2 text-white text-xl font-medium rounded-lg hover:shadow-[0_4px_50px_1px_rgba(0,0,0,0.25)]' onClick={handleSubmit}>Login</button>
                     <p className='mt-2'>New Account? <Link to='/signup' className='underline text-[#3B9DD4]'>Register</Link></p>
                 </div>
             </div>
