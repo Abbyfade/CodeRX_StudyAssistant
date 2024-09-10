@@ -3,7 +3,7 @@ import './App.css';
 import { Login } from './components/Login';
 import { Signup } from './components/Signup';
 import { Landing } from './components/Landing';
-import { Sidenav } from './components/Sidenav';
+// import { Sidenav } from './components/Sidenav';
 
 function App() {
   return (
