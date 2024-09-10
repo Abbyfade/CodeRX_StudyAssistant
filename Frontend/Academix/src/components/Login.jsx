@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import axios from 'axios'
 import xbutton from '../assets/xbutton.png'
 
 export const Login = () => {
@@ -17,7 +18,7 @@ export const Login = () => {
 
     //Details from the form to be submitted
     // const userInfo = {
-    //     userName: userName,
+    //     email: email,
     //     password: password
     // }
 
