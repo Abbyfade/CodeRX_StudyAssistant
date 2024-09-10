@@ -58,9 +58,10 @@ export const Signup = () => {
         event.preventDefault()
         try {
             const response = await axios.post(url, userInfo)
+            console.log(response);
             
         } catch (error) {
-            console.log(error.response);
+            console.log(error);
         }
     }
 
@@ -96,7 +97,7 @@ export const Signup = () => {
                 </div>
 
                 <div className='mt-10 text-center'>
-                    <button className='bg-[#313131] px-6 py-2 text-white text-xl font-medium rounded-lg hover:shadow-[0_4px_50px_1px_rgba(0,0,0,0.25)]'>Sign Up</button>
+                    <button className='bg-[#313131] px-6 py-2 text-white text-xl font-medium rounded-lg hover:shadow-[0_4px_50px_1px_rgba(0,0,0,0.25)]' onClick={handleSubmit}>Sign Up</button>
                     <p>Already have an account? <Link to="/login" className='underline text-[#3B9DD4]'>Log In</Link></p>
                 </div>
             </div>
