@@ -22,7 +22,7 @@ export const Login = () => {
         password: password
     }
 
-    const url = 'URL_GOES_HERE'
+    const url = 'http://127.0.0.1:8000/api/login/'
 
     const handleSubmit = async (event) => {
         event.preventDefault()

@@ -45,19 +45,21 @@ export const Signup = () => {
     //Details from the form to be submitted
     const userInfo = {
         first_name: name,
+        last_name: last_name,
         username: username,
         email: email,
-        last_name: last_name,
         password: password,
     }
 
-    const url = 'http://192.168.137.1:8000/api/register'
+    const url = 'http://127.0.0.1:8000/api/register/'
 
 
     const handleSubmit = async (event) => {
         event.preventDefault()
         try {
-            const response = await axios.post(url, userInfo)
+            console.log(userInfo);
+            
+            const response = await axios.post(url, userInfo);
             console.log(response);
             
         } catch (error) {
