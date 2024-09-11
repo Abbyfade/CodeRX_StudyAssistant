@@ -1,33 +1,90 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
+from rest_framework.generics import ListAPIView
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import PDFUploadSerializer
+from .serializers import PDFUploadSerializer, UploadedFileSerializer
 from django.core.files.storage import default_storage
 from .pdf_extractor import extract_text_from_file 
 from rest_framework.permissions import AllowAny
 from django.shortcuts import redirect
+from .models import UploadedFile
+from django.utils import timezone
+
 
 # Create your views here.
 
-
 class PDFUploadView(APIView):
     parser_classes = [MultiPartParser, FormParser]
+    permission_classes = [IsAuthenticated] 
+
     def post(self, request, format=None):
+        header = {"Access-Control-Allow-Origin":"*"}
         serializer = PDFUploadSerializer(data=request.data)
+        category = request.data.get('category')
         if serializer.is_valid():
             # Save the uploaded file
-            pdf_file = serializer.validated_data['file']
-            file_path = default_storage.save(pdf_file.name, pdf_file)
-            
+            file = serializer.validated_data['file']
+            file_path = default_storage.save(file.name, file)
+            file_name = file.name
+
             # Extract text from the uploaded PDF
             extracted_text = extract_text_from_file(file_path)
             
             # Remove the saved file after processing
             default_storage.delete(file_path)
+
+            # Save the file details and extracted text in the model
+            uploaded_file = UploadedFile.objects.create(
+                user=request.user,
+                file_name=file_name,
+                category=category,
+                date_created=timezone.now(),
+                extracted_text=extracted_text,
+                generated_questions={}
+            )
+            file_id = uploaded_file.id
             
             # Return the extracted text as the response
-            return Response({'extracted_text': extracted_text}, status=status.HTTP_200_OK)
+            return Response({'file_name': file_name, 'file_id': file_id, 'extracted_text': extracted_text}, status=status.HTTP_200_OK, headers=header)
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class GenerateQuestionsView(APIView):
+    permission_classes = [IsAuthenticated] 
+
+    def post(self, request, format=None):
+        file_id = request.data.get('file_id')
+        question_name = request.data.get('question_name')
+        
+        try:
+            uploaded_file = UploadedFile.objects.get(id=file_id, user=request.user)
+            
+            # Implement your question generation logic here.
+            # For now, we’ll use a placeholder example.
+            generated_questions = {
+                "questions": [
+                    "What is the main topic of the document?",
+                    "What are the key points mentioned in the text?"
+                ]
+            }
+            
+            # Update the model with generated questions
+            uploaded_file.question_name = question_name
+            uploaded_file.generated_questions = generated_questions
+            uploaded_file.save()
+            
+            return Response({"message": "Questions generated successfully", "generated_questions": generated_questions}, status=status.HTTP_200_OK)
+        
+        except UploadedFile.DoesNotExist:
+            return Response({"error": "File not found"}, status=status.HTTP_404_NOT_FOUND)
+
+class UserQuestionsListView(ListAPIView):
+    serializer_class = UploadedFileSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        # Return the uploaded files for the logged-in user
+        return UploadedFile.objects.filter(user=self.request.user).exclude(generated_questions={})

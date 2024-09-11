@@ -8,8 +8,7 @@ from django.contrib.auth import get_user_model
 from .serializers import UserSerializer, UserDetailSerializer, UserListSerializer
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.shortcuts import redirect
-from django.views.decorators.csrf import csrf_exempt
-from django.utils.decorators import method_decorator
+from rest_framework.authtoken.models import Token
 
 User = get_user_model()
 
@@ -37,7 +36,8 @@ class LoginUserView(APIView):
 
         if user and user.is_active:
             login(request, user)
-            return Response({"message": "Login successful"}, status=status.HTTP_200_OK, headers=header)
+            token, created = Token.objects.get_or_create(user=user)
+            return Response({"message": "Login successful", "token": token.key}, status=status.HTTP_200_OK, headers=header)
         return Response({"error": "Invalid credentials"}, status=status.HTTP_400_BAD_REQUEST, headers=header)
 
 
