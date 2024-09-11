@@ -12,7 +12,7 @@ from rest_framework.permissions import AllowAny
 from django.shortcuts import redirect
 from .models import UploadedFile
 from django.utils import timezone
-
+from quest_gen import generate_exam_questions
 
 # Create your views here.
 
@@ -58,18 +58,14 @@ class GenerateQuestionsView(APIView):
     def post(self, request, format=None):
         file_id = request.data.get('file_id')
         question_name = request.data.get('question_name')
-        
+        input_text = request.data.get('extracted_text')
+        domain = request.data.get('category')
         try:
             uploaded_file = UploadedFile.objects.get(id=file_id, user=request.user)
             
             # Implement your question generation logic here.
             # For now, we’ll use a placeholder example.
-            generated_questions = {
-                "questions": [
-                    "What is the main topic of the document?",
-                    "What are the key points mentioned in the text?"
-                ]
-            }
+            generated_questions = generate_exam_questions(input_text, domain)
             
             # Update the model with generated questions
             uploaded_file.question_name = question_name
