@@ -1,5 +1,9 @@
 from groq import Groq
 import os
+import json
+from dotenv import load_dotenv
+load_dotenv()
+
 
 def generate_exam_questions(input_text, domain):
     # Set the API key for the Groq client
@@ -11,18 +15,7 @@ def generate_exam_questions(input_text, domain):
         f"You are an expert exam question creator in the field of {domain}, specializing in crafting questions for students. "
         f"Your task is to generate {question_type} questions based on the provided text. "
         f"Generate as many questions as possible in the following JSON format:\n"
-        f"{{\n"
-        f"    \"1\": {{\n"
-        f"        \"question\": \"<question_text>\",\n"
-        f"        \"options\": {{\n"
-        f"            \"A\": \"<option_A>\",\n"
-        f"            \"B\": \"<option_B>\",\n"
-        f"            \"C\": \"<option_C>\",\n"
-        f"            \"D\": \"<option_D>\"\n"
-        f"        }},\n"
-        f"        \"correct_answer\": \"<correct_option>\"\n"
-        f"    }}\n"
-        f"}}\n\n"
+        f'{{"1": {{"question": "<question_text_1>", "options": {{"A": "<option_A_1>", "B": "<option_B_1>", "C": "<option_C_1>", "D": "<option_D_1>"}}, "correct_answer": "<correct_option_1>"}}}}'
         f"Generate as much questions as possible. "
         f"The questions should exhaust all key facts and cover all important concepts presented in the text. "
         f"Include {question_type} scenarios that reflect real-world applications of the concepts. "
@@ -45,7 +38,11 @@ def generate_exam_questions(input_text, domain):
     )
     
     # Extract the generated questions from the response
-    generated_questions = chat_completion.choices[0].message.content
+    generated_questions_str = chat_completion.choices[0].message.content
+    try:
+        generated_questions_json = json.loads(generated_questions_str)
+    except json.JSONDecodeError:
+        raise ValueError("Failed to parse the generated questions into JSON")
 
     # Return the generated questions
-    return generated_questions
+    return generated_questions_json

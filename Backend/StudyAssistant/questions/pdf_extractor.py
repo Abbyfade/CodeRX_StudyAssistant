@@ -95,16 +95,27 @@ def extract_text_from_pdf(pdf_path):
             text_from_tables = []
             page_content = []
             table_in_page = -1
-            pdf = pdfplumber.open(pdf_path)
-            page_tables = pdf.pages[pagenum]
-            tables = page_tables.find_tables()
-            if len(tables) != 0:
-                table_in_page = 0
+            with pdfplumber.open(pdf_path) as pdf:
+                page_tables = pdf.pages[pagenum]
+                tables = page_tables.find_tables()
+                if len(tables) != 0:
+                    table_in_page = 0
 
-            for table_num in range(len(tables)):
-                table = extract_table(pdf_path, pagenum, table_num)
-                table_string = table_converter(table)
-                text_from_tables.append(table_string)
+                for table_num in range(len(tables)):
+                    table = extract_table(pdf_path, pagenum, table_num)
+                    table_string = table_converter(table)
+                    text_from_tables.append(table_string)
+
+            # pdf = pdfplumber.open(pdf_path)
+            # page_tables = pdf.pages[pagenum]
+            # tables = page_tables.find_tables()
+            # if len(tables) != 0:
+            #     table_in_page = 0
+
+            # for table_num in range(len(tables)):
+            #     table = extract_table(pdf_path, pagenum, table_num)
+            #     table_string = table_converter(table)
+            #     text_from_tables.append(table_string)
 
             page_elements = [(element.y1, element) for element in page._objs]
             page_elements.sort(key=lambda a: a[0], reverse=True)
