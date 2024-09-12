@@ -1,15 +1,15 @@
-from groq import Groq
 import os
 import json
 from dotenv import load_dotenv
-load_dotenv()
+from groq import Groq
 
+load_dotenv()
 
 def generate_exam_questions(input_text, domain):
     # Set the API key for the Groq client
-    
-    client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
+    client = Groq(api_key=os.getenv("GROQ_API_KEY"))
     question_type = "Multiple choice questions"
+    
     # Define the prompt with placeholders for input_text, domain, and question_type
     prompt = (
         f"You are an expert exam question creator in the field of {domain}, specializing in crafting questions for students. "
@@ -37,12 +37,14 @@ def generate_exam_questions(input_text, domain):
         # max_tokens=5500
     )
     
-    # Extract the generated questions from the response
+    # Extract the generated questions from the response as a string
     generated_questions_str = chat_completion.choices[0].message.content
+    
+    # Convert the string to JSON
     try:
         generated_questions_json = json.loads(generated_questions_str)
     except json.JSONDecodeError:
         raise ValueError("Failed to parse the generated questions into JSON")
 
-    # Return the generated questions
+    # Return the parsed JSON
     return generated_questions_json
