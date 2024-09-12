@@ -12,7 +12,7 @@ from rest_framework.permissions import AllowAny
 from django.shortcuts import redirect
 from .models import UploadedFile
 from django.utils import timezone
-from quest_gen import generate_exam_questions
+from .quest_gen import generate_exam_questions
 
 # Create your views here.
 
