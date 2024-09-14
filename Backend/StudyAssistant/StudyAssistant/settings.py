@@ -66,7 +66,18 @@ CSRF_TRUSTED_ORIGINS = [
     'http://localhost:3000',
     'https://a9f3-102-88-83-178.ngrok-free.app',
 ]
-CORS_ALLOW_HEADERS = ["*"]
+CORS_ALLOW_HEADERS = [
+    'authorization',
+    'content-type',  # Ensure content-type is allowed for POST requests
+    'x-csrftoken',   # If you're using CSRF tokens in Django
+    'x-requested-with',
+    'x-session-id',  # Include other headers as needed
+    'accept',        # Typically necessary
+    'origin',
+    'accept-encoding',
+    'accept-language',
+    'cache-control',
+]
 
 ROOT_URLCONF = 'StudyAssistant.urls'
 
