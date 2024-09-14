@@ -66,6 +66,7 @@ CSRF_TRUSTED_ORIGINS = [
     'http://localhost:3000',
     'https://a9f3-102-88-83-178.ngrok-free.app',
 ]
+SECURE_SSL_REDIRECT = True
 # CSRF_COOKIE_NAME = "csrftoken"  # Default name for CSRF cookie
 # CSRF_HEADER_NAME = "X-CSRFToken"  # Header name for CSRF token
 
