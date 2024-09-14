@@ -62,10 +62,10 @@ CORS_ALLOW_CREDENTIALS = True
 #     "http://192.168.197.14:3000",
 # ]
 
-# CSRF_TRUSTED_ORIGINS = [
-#     'http://localhost:3000',
-#     'http://192.168.197.14:3000',
-# ]
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:3000',
+    'https://a9f3-102-88-83-178.ngrok-free.app',
+]
 # CSRF_COOKIE_NAME = "csrftoken"  # Default name for CSRF cookie
 # CSRF_HEADER_NAME = "X-CSRFToken"  # Header name for CSRF token
 
