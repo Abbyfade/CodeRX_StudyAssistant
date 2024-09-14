@@ -81,7 +81,7 @@ class GenerateQuestionsView(APIView):
         uploaded_file = UploadedFile.objects.create(
                 user=request.user,
                 file_name=file_name,
-                question_name=question_name
+                question_name=question_name,
                 category=domain,
                 date_created=timezone.now(),
                 extracted_text=input_text,
