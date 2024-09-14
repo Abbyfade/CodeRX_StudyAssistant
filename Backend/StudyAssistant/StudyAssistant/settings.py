@@ -66,6 +66,7 @@ CSRF_TRUSTED_ORIGINS = [
     'http://localhost:3000',
     'https://a9f3-102-88-83-178.ngrok-free.app',
 ]
+CORS_ALLOW_HEADERS = ["*"]
 
 ROOT_URLCONF = 'StudyAssistant.urls'
 
