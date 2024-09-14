@@ -55,20 +55,17 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
-# CORS_ALLOWED_ORIGINS = [
-#     "http://localhost:3000",  # Your frontend URL
-#     "http://192.168.197.14:3000",
-# ]
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  # Your frontend URL
+    'https://a9f3-102-88-83-178.ngrok-free.app',
+]
 
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:3000',
     'https://a9f3-102-88-83-178.ngrok-free.app',
 ]
-SECURE_SSL_REDIRECT = True
-# CSRF_COOKIE_NAME = "csrftoken"  # Default name for CSRF cookie
-# CSRF_HEADER_NAME = "X-CSRFToken"  # Header name for CSRF token
 
 ROOT_URLCONF = 'StudyAssistant.urls'
 
