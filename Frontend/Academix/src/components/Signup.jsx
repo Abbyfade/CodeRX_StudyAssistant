@@ -52,7 +52,7 @@ export const Signup = () => {
         email: email,
         password: password,
     }
-    const url = 'https://9148-13-60-211-71.ngrok-free.app/api/register/'
+    const url = 'http://13.60.211.71:8000/api/register/'
 
 
     const handleSubmit = async (event) => {
