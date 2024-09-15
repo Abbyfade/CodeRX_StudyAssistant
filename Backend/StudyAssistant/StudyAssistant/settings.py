@@ -49,7 +49,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -63,11 +63,11 @@ CORS_ALLOWED_ORIGINS = [
     'https://code-rx-study-assistant.vercel.app',
 ]
 
-CSRF_TRUSTED_ORIGINS = [
-    'http://localhost:3000',
-    'https://a9f3-102-88-83-178.ngrok-free.app',
-    'https://code-rx-study-assistant.vercel.app',
-]
+# CSRF_TRUSTED_ORIGINS = [
+#     'http://localhost:3000',
+#     'https://a9f3-102-88-83-178.ngrok-free.app',
+#     'https://code-rx-study-assistant.vercel.app',
+# ]
 CORS_ALLOW_HEADERS = [
     'authorization',
     'content-type',  # Ensure content-type is allowed for POST requests
