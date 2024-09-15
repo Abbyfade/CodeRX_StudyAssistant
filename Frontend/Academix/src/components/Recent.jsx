@@ -13,13 +13,13 @@ export const Recent = () => {
 
   const fetchData = async () => {
     try {
-      const [userResponse, recentsResponse] = await Promise.all([ axios.get('https://9148-13-60-211-71.ngrok-free.app/api/user_detail/', {
+      const [userResponse, recentsResponse] = await Promise.all([ axios.get('https://c5f0-13-60-211-71.ngrok-free.app/api/user_detail/', {
         withCredentials: true,
         headers: {
           "Authorization":'Token ' + localStorage.getItem('token'),
         },
         
-      }), axios.get('https://9148-13-60-211-71.ngrok-free.app/api/user_questions/', {
+      }), axios.get('https://c5f0-13-60-211-71.ngrok-free.app/api/user_questions/', {
         withCredentials: true,
         headers: {
           "Authorization": "Token " + localStorage.getItem('token'),

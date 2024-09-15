@@ -7,3 +7,15 @@
     background-repeat: no-repeat;
     background-position: top right, bottom left;
 }
+
+.landing-left {
+    background-image: url(./assets/downdown.png);
+    background-repeat: no-repeat;
+    background-position: 0% 150%;
+}
+
+.landing-right {
+    background-image: url(./assets/behind.png);
+    background-repeat: no-repeat;
+    background-position: 120% 100%;
+}

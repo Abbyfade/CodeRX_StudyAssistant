@@ -30,7 +30,9 @@ export const Login = () => {
     const handleSubmit = async (event) => {
         event.preventDefault()
         try {
-            const response = await axios.post(url, userInfo, {withCredentials: true})
+            const response = await axios.post(url, userInfo, 
+                {withCredentials: true}
+            )
             localStorage.setItem('token', response.data.token)
             console.log(response.data.token);
             navigate('/user/home')
@@ -43,7 +45,7 @@ export const Login = () => {
   return (
     //Page Contents
     <div className='flex justify-center mx-auto w-screen h-screen items-center login-bg'>
-        <div className='w-[60%] mx-auto bg-white shadow-[0_4px_50px_1px_rgba(0,0,0,0.25)] px-16 py-12 text-left items-center rounded-lg'>
+        <div className='md:w-[60%] w-[95%] mx-auto bg-white shadow-[0_4px_50px_1px_rgba(0,0,0,0.25)] md:px-16 px-6 py-12 text-left items-center rounded-lg'>
             <div className='text-5xl font-semibold flex justify-between'>
                 <h2>Login</h2>
                 <div><Link to='/'><img src={xbutton} alt="" /></Link></div>

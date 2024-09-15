@@ -4,7 +4,6 @@ import home from '../assets/Home.png'
 import help from '../assets/Help.png'
 import users from '../assets/Users.png'
 import grades from '../assets/Grades.png'
-import settings from '../assets/settings.png'
 import { Outlet, NavLink, useNavigate } from 'react-router-dom'
 import axios from 'axios';
 
@@ -22,7 +21,7 @@ export const Sidenav = () => {
 
     const fetchUserData = async () => {
         try {
-        const response = await axios.get('https://9148-13-60-211-71.ngrok-free.app/api/user_detail/', {
+        const response = await axios.get('https://c5f0-13-60-211-71.ngrok-free.app/api/user_detail/', {
             withCredentials: true,
             headers: {
             Authorization: 'Token ' + localStorage.getItem('token'),
