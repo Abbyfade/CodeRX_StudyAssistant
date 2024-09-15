@@ -12,7 +12,7 @@ export const QuestionDetail = () => {
   const params = useParams();
   const fileId = params.fileId;
 
-  const questiondetailsurl = `https://9148-13-60-211-71.ngrok-free.app/api/question_detail/${fileId}`;
+  const questiondetailsurl = `https://c5f0-13-60-211-71.ngrok-free.app/api/question_detail/${fileId}`;
 
   const questionDetails = async () => {
     setLoading(true); // Start loading before the request

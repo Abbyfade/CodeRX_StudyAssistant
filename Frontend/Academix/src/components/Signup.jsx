@@ -53,7 +53,7 @@ export const Signup = () => {
         password: password,
     }
 
-    const url = 'https://9148-13-60-211-71.ngrok-free.app/api/register/'
+    const url = 'https://c5f0-13-60-211-71.ngrok-free.app/api/register/'
 
 
     const handleSubmit = async (event) => {
@@ -68,8 +68,8 @@ export const Signup = () => {
 
   return (
     //Page Content
-    <div className='flex items-center justify-center mx-auto h-screen w-screen py-4'>
-        <div className='w-[60%] mx-auto bg-white shadow-[0_4px_50px_1px_rgba(0,0,0,0.25)] px-16 py-6 text-left items-center rounded-lg'>
+    <div className='flex flex-wrap md:flex-nowrap items-center justify-center mx-auto h-screen w-screen py-4'>
+        <div className='md:w-[60%] w-[95%] mx-auto bg-white shadow-[0_4px_50px_1px_rgba(0,0,0,0.25)] md:px-16 px-8 py-6 text-left items-center rounded-lg'>
             <div className='text-5xl font-semibold flex justify-between'>
                 <h2>Register</h2>
                 <div><Link to='/'><img src={xbutton} alt="" /></Link></div>
