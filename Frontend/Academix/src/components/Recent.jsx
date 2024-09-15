@@ -13,13 +13,13 @@ export const Recent = () => {
 
   const fetchData = async () => {
     try {
-      const [userResponse, recentsResponse] = await Promise.all([ axios.get('http://13.60.211.71:8000/api/user_detail/', {
+      const [userResponse, recentsResponse] = await Promise.all([ axios.get('http://16.171.33.87:3000/api/user_detail/', {
         withCredentials: true,
         headers: {
           "Authorization":'Token ' + localStorage.getItem('token'),
         },
         
-      }), axios.get('http://13.60.211.71:8000/api/user_questions/', {
+      }), axios.get('http://16.171.33.87:3000/api/user_questions/', {
         withCredentials: true,
         headers: {
           "Authorization": "Token " + localStorage.getItem('token'),
