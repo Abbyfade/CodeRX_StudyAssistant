@@ -29,7 +29,7 @@ export const Landing = () => {
           <p className='md:w-[73%] w-[90%] mt-2 text-[#0E2633] text-xl mb-2'>Transform your lecture notes into custom practice questions that enhance retention, deepens understanding, and helps you ace your exams with targeted, effective sessions tailored just for you.</p>
           <div className='flex gap-4 mb-16 md:mt-0 mt-4'>
               <Link to='/login' className='px-6 py-2 rounded-lg border-2 border-solid border-[#0E2633]'>Login</Link>
-              <div to='/signup' className='px-6 py-2 rounded-lg bg-[#0E2633] text-white font-semibold'>Signup</div>
+              <Link to='/signup' className='px-6 py-2 rounded-lg bg-[#0E2633] text-white font-semibold'>Signup</Link>
             </div>
         </div>
 
