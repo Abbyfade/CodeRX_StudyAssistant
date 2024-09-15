@@ -21,7 +21,7 @@ export const Sidenav = () => {
 
     const fetchUserData = async () => {
         try {
-        const response = await axios.get('http://16.171.33.87:3000/api/user_detail/', {
+        const response = await axios.get('http://16.171.33.87:8000/api/user_detail/', {
             withCredentials: true,
             headers: {
             Authorization: 'Token ' + localStorage.getItem('token'),
