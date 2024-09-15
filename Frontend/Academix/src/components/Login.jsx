@@ -23,7 +23,7 @@ export const Login = () => {
     }
 
 
-    const url = 'https://9148-13-60-211-71.ngrok-free.app/api/login/'
+    const url = 'http://13.60.211.71:8000/api/login/'
     const navigate = useNavigate()
     
 
