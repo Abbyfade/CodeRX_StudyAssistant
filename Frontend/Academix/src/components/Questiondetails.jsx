@@ -12,7 +12,7 @@ export const QuestionDetail = () => {
   const params = useParams();
   const fileId = params.fileId;
 
-  const questiondetailsurl = `http://16.171.33.87:3000/api/question_detail/${fileId}`;
+  const questiondetailsurl = `http://16.171.33.87:8000/api/question_detail/${fileId}`;
 
   const questionDetails = async () => {
     setLoading(true); // Start loading before the request
