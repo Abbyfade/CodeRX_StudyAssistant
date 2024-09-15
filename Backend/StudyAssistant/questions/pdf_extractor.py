@@ -5,7 +5,7 @@ from pdfminer.layout import LTTextContainer, LTChar
 import pdfplumber
 from PIL import Image
 from pdf2image import convert_from_path
-import pytesseract
+# import pytesseract
 from pptx import Presentation
 
 
@@ -75,7 +75,8 @@ def convert_to_images(input_file):
 
 def image_to_text(image_path):
     img = Image.open(image_path)
-    text = pytesseract.image_to_string(img)
+    # text = pytesseract.image_to_string(img)
+    text= ""
     return text
 
 
@@ -95,11 +96,12 @@ def extract_text_from_pdf(pdf_path):
             text_from_tables = []
             page_content = []
             table_in_page = -1
-            pdf = pdfplumber.open(pdf_path)
-            page_tables = pdf.pages[pagenum]
-            tables = page_tables.find_tables()
-            if len(tables) != 0:
-                table_in_page = 0
+            with open(pdf_path, 'rb') as pdf:
+                pdf = pdfplumber.open(pdf)
+                page_tables = pdf.pages[pagenum]
+                tables = page_tables.find_tables()
+                if len(tables) != 0:
+                    table_in_page = 0
 
             for table_num in range(len(tables)):
                 table = extract_table(pdf_path, pagenum, table_num)

@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-=k@(qpcb2rxgtlr(k7iogz3ygj256g32pq=6hr1^v38utq@er+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -40,9 +40,12 @@ INSTALLED_APPS = [
     'users',
     'questions',
     'rest_framework',
+    'rest_framework.authtoken',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -50,6 +53,30 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+# CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  # Your frontend URL
+    'https://a9f3-102-88-83-178.ngrok-free.app',
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:3000',
+    'https://a9f3-102-88-83-178.ngrok-free.app',
+]
+CORS_ALLOW_HEADERS = [
+    'authorization',
+    'content-type',  # Ensure content-type is allowed for POST requests
+    'x-csrftoken',   # If you're using CSRF tokens in Django
+    'x-requested-with',
+    'x-session-id',  # Include other headers as needed
+    'accept',        # Typically necessary
+    'origin',
+    'accept-encoding',
+    'accept-language',
+    'cache-control',
 ]
 
 ROOT_URLCONF = 'StudyAssistant.urls'
@@ -102,6 +129,11 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTHENTICATION_BACKENDS = [
+    'users.backends.EmailBackend',  # Add your custom backend
+    'django.contrib.auth.backends.ModelBackend',  # Keep the default backend if needed
+]
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
@@ -129,11 +161,17 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
-        'rest_framework.renderers.BrowsableAPIRenderer',  # This must be included
+        'rest_framework.renderers.BrowsableAPIRenderer',
     ),
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
     'DEFAULT_PARSER_CLASSES': (
         'rest_framework.parsers.JSONParser',
         'rest_framework.parsers.MultiPartParser',  # Support for file uploads
         'rest_framework.parsers.FormParser',      # Support for form data
     ),
+     'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
 }
