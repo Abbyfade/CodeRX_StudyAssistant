@@ -52,8 +52,7 @@ export const Signup = () => {
         email: email,
         password: password,
     }
-
-    const url = 'https://c5f0-13-60-211-71.ngrok-free.app/api/register/'
+    const url = 'https://9148-13-60-211-71.ngrok-free.app/api/register/'
 
 
     const handleSubmit = async (event) => {
@@ -61,6 +60,8 @@ export const Signup = () => {
         try {
             const response = await axios.post(url, userInfo)
             if(response.status === 201) {navigate('/login')}
+            
+
         } catch (error) {
             console.log(error.status);
         }
