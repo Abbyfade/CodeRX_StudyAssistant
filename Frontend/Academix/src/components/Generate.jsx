@@ -52,7 +52,7 @@ export const Generate = () => {
     setQuestionName(e.target.value);
   };
 
-  const uploadurl = 'https://c5f0-13-60-211-71.ngrok-free.app/api/upload_pdf/';
+  const uploadurl = 'http://13.60.211.71:8000/api/upload_pdf/';
 
   const handleUpload = async (event) => {
     event.preventDefault();
@@ -83,7 +83,7 @@ export const Generate = () => {
     }
   };
 
-  const generateurl = 'https://c5f0-13-60-211-71.ngrok-free.app/api/generate/';
+  const generateurl = 'http://13.60.211.71:8000/api/generate/';
 
   const handleGenerate = async (event) => {
     if (previewData && selectedOption && questionName) {
