@@ -60,11 +60,13 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # Your frontend URL
     'https://a9f3-102-88-83-178.ngrok-free.app',
+    'https://code-rx-study-assistant.vercel.app',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:3000',
     'https://a9f3-102-88-83-178.ngrok-free.app',
+    'https://code-rx-study-assistant.vercel.app',
 ]
 CORS_ALLOW_HEADERS = [
     'authorization',
