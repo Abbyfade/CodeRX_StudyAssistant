@@ -52,7 +52,7 @@ export const Signup = () => {
         email: email,
         password: password,
     }
-    const url = 'http://16.171.33.87:3000/api/register/'
+    const url = 'http://16.171.33.87:8000/api/register/'
 
 
     const handleSubmit = async (event) => {
