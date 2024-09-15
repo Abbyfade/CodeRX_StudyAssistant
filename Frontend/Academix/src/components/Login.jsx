@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import xbutton from '../assets/xbutton.png'
 
@@ -22,13 +22,17 @@ export const Login = () => {
         password: password
     }
 
-    const url = 'URL_GOES_HERE'
+    const url = 'https://9148-13-60-211-71.ngrok-free.app/api/login/'
+    const navigate = useNavigate()
+    
 
     const handleSubmit = async (event) => {
         event.preventDefault()
         try {
-            const response = await axios.post(url, userInfo)
-            console.log(response);
+            const response = await axios.post(url, userInfo, {withCredentials: true})
+            localStorage.setItem('token', response.data.token)
+            console.log(response.data.token);
+            navigate('/user/home')
             
         } catch (error) {
             console.log(error);

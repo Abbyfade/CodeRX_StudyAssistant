@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import xbutton from '../assets/xbutton.png'
 import axios from 'axios'
 
@@ -42,26 +42,27 @@ export const Signup = () => {
         setEmail(e.target.value)
     }
 
+    const navigate = useNavigate()
+
     //Details from the form to be submitted
     const userInfo = {
         first_name: name,
+        last_name: last_name,
         username: username,
         email: email,
-        last_name: last_name,
         password: password,
     }
 
-    const url = 'http://192.168.137.1:8000/api/register'
+    const url = 'https://9148-13-60-211-71.ngrok-free.app/api/register/'
 
 
     const handleSubmit = async (event) => {
         event.preventDefault()
         try {
             const response = await axios.post(url, userInfo)
-            console.log(response);
-            
+            if(response.status === 201) {navigate('/login')}
         } catch (error) {
-            console.log(error);
+            console.log(error.status);
         }
     }
 
@@ -78,7 +79,7 @@ export const Signup = () => {
                     <input autoFocus className='mt-12 border-b-[1px] border-b-black border-solid outline-none py-[10px] w-full' type="text" name="name" id="name" placeholder='Name' value={name} onChange={handleName} />
                 </div>
                 <div>
-                    <input className='mt-8 border-b-[1px] border-b-black border-solid outline-none py-[10px] w-full' type="text" name="phone" id='phone' placeholder='lastname' value={last_name} onChange={handleLastName}/>
+                    <input className='mt-8 border-b-[1px] border-b-black border-solid outline-none py-[10px] w-full' type="text" name="last name" id='last name' placeholder='lastname' value={last_name} onChange={handleLastName}/>
                 </div>
 
                 <div>
