@@ -52,7 +52,7 @@ export const Generate = () => {
     setQuestionName(e.target.value);
   };
 
-  const uploadurl = 'http://13.60.211.71:8000/api/upload_pdf/';
+  const uploadurl = 'http://16.171.33.87:3000/api/upload_pdf/';
 
   const handleUpload = async (event) => {
     event.preventDefault();
