@@ -11,7 +11,7 @@ export const Questions = () => {
 
   const fetchData = async () => {
     try {
-      const recentsResponse = await axios.get('https://c5f0-13-60-211-71.ngrok-free.app/api/user_questions/', {
+      const recentsResponse = await axios.get('http://13.60.211.71:8000/api/user_questions/', {
         withCredentials: true,
         headers: {
           "Authorization": "Token " + localStorage.getItem('token'),
