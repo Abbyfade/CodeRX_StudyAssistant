@@ -21,7 +21,7 @@ export const Sidenav = () => {
 
     const fetchUserData = async () => {
         try {
-        const response = await axios.get('https://c5f0-13-60-211-71.ngrok-free.app/api/user_detail/', {
+        const response = await axios.get('http://16.171.33.87:8000/api/user_detail/', {
             withCredentials: true,
             headers: {
             Authorization: 'Token ' + localStorage.getItem('token'),

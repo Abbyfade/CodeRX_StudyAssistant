@@ -59,8 +59,8 @@ MIDDLEWARE = [
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # Your frontend URL
-    'https://a9f3-102-88-83-178.ngrok-free.app',
-    'https://code-rx-study-assistant.vercel.app',
+   # 'http://13.60.211.71:3000',
+    'http://16.171.33.87:3000',
 ]
 
 # CSRF_TRUSTED_ORIGINS = [
