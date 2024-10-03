@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Useronly } from './Useronly';
 import upload from '../assets/Upload.png';
 import { specialties } from './Data/samplecourses';
 import Select from 'react-select';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import profpic from '../assets/profpic.png';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 
 export const Generate = () => {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -12,13 +12,15 @@ export const Generate = () => {
   const [isPreview, setIsPreview] = useState(false);
   const [previewData, setPreviewData] = useState('');
   const [fileName, setFileName] = useState('');
-  const [fileId, setFileId] = useState('');
   const [questionName, setQuestionName] = useState('');
   const [isGenerating, setIsGenerating] = useState(false); // For the "Questions are being generated" popup
   const [uploadProgress, setUploadProgress] = useState(0); //progress bar during file upload
   const [isUploading, setIsUploading] = useState(false); // Display progress bar or not
 
   const navigate = useNavigate();
+  const { user, setSidebarOpen } = useOutletContext()
+
+  console.log(user);
 
   // Handle Selected file
   const handleFileChange = (event) => {
@@ -41,6 +43,7 @@ export const Generate = () => {
 
   const removeFile = () => {
     setSelectedFile(null);
+    setPreviewData('')
     setUploadProgress(0);
   };
 
@@ -103,7 +106,6 @@ export const Generate = () => {
           },
         });
 
-        setFileId(response.data.file_id);
         setIsGenerating(false);
         navigate(`/user/questiondetails/${response.data.file_id}`); //Move to questions page after generating the questions successfully
       } catch (error) {
@@ -123,7 +125,21 @@ export const Generate = () => {
 
   return (
     <div className='font-Inter text-[#313131]'>
-      <Useronly />
+      <div className='flex justify-between lg:justify-end items-center'>
+        {/* Left Side */}
+        <div className=" lg:hidden" onClick={() => setSidebarOpen(true)}>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 5.25h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5" />
+          </svg>
+        </div>
+        {/* Right Side */}
+        <div className='flex justify-center items-center gap-4'>
+          <div className='flex items-center gap-2 bg-[#DAF2FF] w-fit py-2 px-2 rounded-2xl text-base lg:text-xl font-semibold'>
+            <img src={profpic} className=' w-6 lg:w-full' alt='user' /> 
+            <p>{user}</p>
+          </div>
+        </div>  
+      </div>
 
       {/*The Small Green Popup when questions are being generated*/}
       {isGenerating && (
@@ -135,26 +151,26 @@ export const Generate = () => {
       {/* Conditional for Preview or UploadForm */}
       {!isPreview ? (
         <>
-          <div className='text-3xl font-semibold w-11/12 mx-auto text-[#313131]'>
+          <div className='text-3xl font-semibold w-full lg:w-11/12 mx-auto mt-8 text-[#313131]'>
             <h2>Generate Question</h2>
           </div>
 
-          <div className='w-10/12 ml-12 mt-4'>
+          <div className='lg:w-10/12 lg:ml-12 mt-4'>
             <div className="flex justify-center items-center">
               <div className="border border-[#313131] border-solid rounded-3xl py-12 w-full flex flex-col justify-center items-center">
-                <img src={upload} alt="Upload" className="" />
+                <img src={upload} alt="Upload" className={selectedFile? 'w-16' : 'inline-block'} />
 
                 {/* Info about uploaded document */}
                 {selectedFile ? (
                   <div>
-                    <p className="text-4xl text-[#313131] font-light mt-4 max-w-[80%] mx-auto text-center">{selectedFile.name}</p>
-                    <p className="text-4xl text-[#313131] font-light mb-4 mx-auto max-w-[80%] text-center">
+                    <p className="lg:text-4xl text-2xl text-[#313131] font-medium lg:font-normal mt-4 max-w-[80%] mx-auto text-center">{selectedFile.name}</p>
+                    <p className="lg:text-4xl text-2xl text-[#313131] font-light mb-4 mx-auto max-w-[80%] text-center">
                       {(selectedFile.size / 1024).toFixed(2)} KB
                     </p>
 
                     {/* Progress bar */}
                     {isUploading && (
-                      <div className="w-full h-4 bg-gray-200 rounded-full mt-4">
+                      <div className="w-10/12 mx-auto h-4 bg-gray-200 rounded-full my-3">
                         <div className="h-4 bg-[#0E2633] rounded-full" style={{ width: `${uploadProgress}%` }}></div>
                       </div>
                     )}
@@ -175,9 +191,9 @@ export const Generate = () => {
 
                 {/* Hidden input for file upload */}
                 {selectedFile ? (
-                  <div className='flex gap-6'>
-                    <button className= {`cursor-pointer inline-block bg-[#0E2633] text-white py-4 px-10 rounded-lg text-sm font-medium`} onClick={handleUpload}>Upload</button>
-                    <button className='cursor-pointer inline-block bg-red-500 text-white py-4 px-10 rounded-lg text-sm font-medium' onClick={removeFile}>Remove</button>
+                  <div className={'flex gap-6'}>
+                    <button disabled={isUploading || uploadProgress > 0} className= { `disabled:bg-slate-500 disabled:cursor-default cursor-pointer inline-block bg-[#0E2633] text-white py-2 px-5 lg:py-4 lg:px-10 rounded-lg text-sm font-medium`} onClick={handleUpload}>Upload</button>
+                    <button className='cursor-pointer inline-block bg-red-500 text-white py-2 px-5 lg:py-4 lg:px-10 rounded-lg text-sm font-medium' onClick={removeFile}>Remove</button>
                   </div>
                 ) : (
                   <label className="cursor-pointer inline-block bg-[#0E2633] text-white py-4 px-10 rounded-lg text-sm font-medium">
@@ -189,19 +205,17 @@ export const Generate = () => {
             </div>
           </div>
 
-          <div className='w-10/12 ml-12 shadow-select mt-4 rounded-lg'>
+          <div className='lg:w-10/12 lg:ml-12 shadow-select mt-4 rounded-lg'>
             <input type="text" required className='w-full outline-none h-10 px-4 rounded-lg' placeholder='Name Your Study...' value={questionName} onChange={handleQuestionName}/>
           </div>
 
           {/* Specialty Dropdown */}
-          <div className='w-10/12 ml-12 shadow-select mt-4'>
+          <div className='lg:w-10/12 lg:ml-12 shadow-select mt-4'>
             <Select value={selectedOption} onChange={handleChange} options={specialties} placeholder="Select question specialty" isSearchable={true} />
           </div>
 
-          <div className='flex justify-end gap-8 w-10/12 ml-12 mt-6'>
-            <button className='border border-solid border-[#0E2633] py-2 px-5 text-[#0E2633] font-semibold rounded-lg' onClick={handlePreview}>
-              Preview
-            </button>
+          <div className='flex justify-end gap-8 lg:w-10/12 lg:ml-12 mt-6'>
+            <button className='border border-solid border-[#0E2633] py-2 px-5 text-[#0E2633] font-semibold rounded-lg' onClick={handlePreview}>Preview</button>
             <button className='py-2 px-5 bg-[#0E2633] text-white font-semibold rounded-lg' onClick={handleGenerate}>Generate</button>
           </div>
         </>

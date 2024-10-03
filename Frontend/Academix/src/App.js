@@ -9,6 +9,7 @@ import { Generate } from './components/Generate';
 import  ProtectedRoute  from './components/Protectedroute';
 import { Questions } from './components/Questions';
 import { QuestionDetail } from './components/Questiondetails';
+import { Test } from './components/Test';
 
 function App() {
   return (
@@ -22,8 +23,9 @@ function App() {
           <Route path='user' element={<ProtectedRoute><Sidenav /></ProtectedRoute>} >
             <Route path='home' element={<ProtectedRoute><Recent /></ProtectedRoute>} index/>
             <Route path='generate' element={<ProtectedRoute><Generate /></ProtectedRoute>} />
-            <Route path='questions' element={<Questions />} />
-            <Route path='questiondetails/:fileId' element={<QuestionDetail />} />
+            <Route path='questions' element={<ProtectedRoute><Questions /></ProtectedRoute>} />
+            <Route path='questiondetails/:fileId' element={<ProtectedRoute><QuestionDetail /></ProtectedRoute>} />
+            <Route path='assess' element={<ProtectedRoute><Test /></ProtectedRoute>} />
           </Route>
       </Routes>
     </div>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, NavLink, useOutletContext } from 'react-router-dom';
+import profpic from '../assets/profpic.png';
 import axios from 'axios';
 
 export const QuestionDetail = () => {
@@ -10,6 +11,7 @@ export const QuestionDetail = () => {
   const [questionName, setQuestionName] = useState('')
 
   const params = useParams();
+  const { setSidebarOpen, user } = useOutletContext()
   const fileId = params.fileId;
 
   const questiondetailsurl = `http://16.171.33.87:8000/api/question_detail/${fileId}`;
@@ -24,7 +26,8 @@ export const QuestionDetail = () => {
           Authorization: 'Token ' + localStorage.getItem('token'),
         },
       });
-      setQuestionsData(response.data.question_detail); // Set the correct data in state
+      setQuestionsData(response.data.question_detail);
+      console.log(response.data.question_detail); // Set the correct data in state
       setQuestionName(response.data.question_name)
     } catch (error) {
       console.error('Error fetching question details:', error);
@@ -55,8 +58,27 @@ export const QuestionDetail = () => {
   }
 
   return (
-    <div className="font-Inter text-[#313131] mx-auto w-10/12">
-      <h2 className="text-4xl font-semibold mb-6">{questionName}</h2>
+    <div className="font-Inter text-[#313131] mx-auto w-11/12 lg:w-11/12">
+      <div className='sticky top-0 bg-white py-2 shadow-md lg:shadow-none  flex justify-between lg:justify-end items-center'>
+        {/* Left Side */}
+        <div className=" lg:hidden" onClick={() => setSidebarOpen(true)}>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 5.25h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5" />
+          </svg>
+        </div>
+        {/* Right Side */}
+        <div className='flex justify-center items-center gap-4'>
+          <div className='flex items-center gap-2 bg-[#DAF2FF] w-fit py-2 px-2 rounded-2xl text-base lg:text-xl font-semibold'>
+            <img src={profpic} className=' w-6 lg:w-full' alt='user' /> 
+            <p>{user}</p>
+          </div>
+          <div>
+            <NavLink to='/user/generate' className='py-2 px-2 bg-[#0E2633] text-white rounded-xl text-base md:text-xl lg:text-2xl'>Generate</NavLink>
+          </div>
+        </div>  
+      </div>
+
+      <h2 className="text-4xl font-semibold mb-6 mt-6">{questionName}</h2>
 
       {/* Loop through questions */}
       {questionsData.map((questionObj, index) => {
