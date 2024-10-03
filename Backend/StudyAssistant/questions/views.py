@@ -60,6 +60,7 @@ class GenerateQuestionsView(APIView):
         question_name = request.data.get('question_name')
         input_text = request.data.get('extracted_text')
         domain = request.data.get('category')
+        question_type = request.data.get('question_type')
         # try:
         #     uploaded_file = UploadedFile.objects.get(id=file_id, user=request.user)
             
@@ -77,7 +78,7 @@ class GenerateQuestionsView(APIView):
         
         # except UploadedFile.DoesNotExist:
         #     return Response({"error": "File not found"}, status=status.HTTP_404_NOT_FOUND)
-        generated_questions = generate_exam_questions(input_text, domain)
+        generated_questions = generate_exam_questions(input_text, domain, question_type)
         uploaded_file = UploadedFile.objects.create(
                 user=request.user,
                 file_name=file_name,
