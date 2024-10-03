@@ -21,9 +21,7 @@ class PDFUploadView(APIView):
     permission_classes = [IsAuthenticated] 
 
     def post(self, request, format=None):
-        header = {"Access-Control-Allow-Origin":"*"}
         serializer = PDFUploadSerializer(data=request.data)
-        category = request.data.get('category')
         if serializer.is_valid():
             # Save the uploaded file
             file = serializer.validated_data['file']
@@ -37,18 +35,19 @@ class PDFUploadView(APIView):
             default_storage.delete(file_path)
 
             # Save the file details and extracted text in the model
-            uploaded_file = UploadedFile.objects.create(
-                user=request.user,
-                file_name=file_name,
-                category=category,
-                date_created=timezone.now(),
-                extracted_text=extracted_text,
-                generated_questions={}
-            )
-            file_id = uploaded_file.id
+            # uploaded_file = UploadedFile.objects.create(
+            #     user=request.user,
+            #     file_name=file_name,
+            #     category='',
+            #     date_created=timezone.now(),
+            #     extracted_text=extracted_text,
+            #     generated_questions={}
+            # )
+            # file_id = uploaded_file.id
             
             # Return the extracted text as the response
-            return Response({'file_name': file_name, 'file_id': file_id, 'extracted_text': extracted_text}, status=status.HTTP_200_OK, headers=header)
+            # return Response({'file_name': file_name, 'file_id': file_id, 'extracted_text': extracted_text}, status=status.HTTP_200_OK)
+            return Response({'file_name': file_name, 'extracted_text': extracted_text}, status=status.HTTP_200_OK)
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -56,31 +55,58 @@ class GenerateQuestionsView(APIView):
     permission_classes = [IsAuthenticated] 
 
     def post(self, request, format=None):
-        file_id = request.data.get('file_id')
+        # file_id = request.data.get('file_id')
+        file_name = request.data.get('file_name')
         question_name = request.data.get('question_name')
         input_text = request.data.get('extracted_text')
         domain = request.data.get('category')
-        try:
-            uploaded_file = UploadedFile.objects.get(id=file_id, user=request.user)
+        # try:
+        #     uploaded_file = UploadedFile.objects.get(id=file_id, user=request.user)
             
-            # Implement your question generation logic here.
-            # For now, we’ll use a placeholder example.
-            generated_questions = generate_exam_questions(input_text, domain)
+        #     # Implement your question generation logic here.
+        #     # For now, we’ll use a placeholder example.
+        #     generated_questions = generate_exam_questions(input_text, domain)
             
-            # Update the model with generated questions
-            uploaded_file.question_name = question_name
-            uploaded_file.generated_questions = generated_questions
-            uploaded_file.save()
+        #     # Update the model with generated questions
+        #     uploaded_file.question_name = question_name
+        #     uploaded_file.generated_questions = generated_questions
+        #     uploaded_file.category = domain
+        #     uploaded_file.save()
             
-            return Response({"message": "Questions generated successfully", "generated_questions": generated_questions}, status=status.HTTP_200_OK)
+        #     return Response({"message": "Questions generated successfully", "generated_questions": generated_questions}, status=status.HTTP_200_OK)
         
-        except UploadedFile.DoesNotExist:
-            return Response({"error": "File not found"}, status=status.HTTP_404_NOT_FOUND)
+        # except UploadedFile.DoesNotExist:
+        #     return Response({"error": "File not found"}, status=status.HTTP_404_NOT_FOUND)
+        generated_questions = generate_exam_questions(input_text, domain)
+        uploaded_file = UploadedFile.objects.create(
+                user=request.user,
+                file_name=file_name,
+                question_name=question_name,
+                category=domain,
+                date_created=timezone.now(),
+                extracted_text=input_text,
+                generated_questions=generated_questions
+            )
+        file_id = uploaded_file.id
+        return Response({"message": "Questions generated successfully", "file_id":file_id}, status=status.HTTP_200_OK)
+        
 
-class UserQuestionsListView(ListAPIView):
-    serializer_class = UploadedFileSerializer
+class UserQuestionsListView(APIView):
     permission_classes = [IsAuthenticated]
-    
-    def get_queryset(self):
-        # Return the uploaded files for the logged-in user
-        return UploadedFile.objects.filter(user=self.request.user).exclude(generated_questions={})
+
+    def get(self, request):
+        # Fetching queryset manually
+        questions = UploadedFile.objects.filter(user=self.request.user).order_by('-date_created')
+        # Serializing data
+        serializer = UploadedFileSerializer(questions, many=True)
+        # Custom response
+        return Response({'questions': serializer.data})
+
+class QuestionDetailView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, file_id):
+        question = UploadedFile.objects.get(id=file_id)
+        question_name= question.question_name
+        question_detail = question.generated_questions
+        return Response({'question_name': question_name, 'question_detail': question_detail})

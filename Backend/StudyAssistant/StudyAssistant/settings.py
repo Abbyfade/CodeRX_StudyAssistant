@@ -49,13 +49,37 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  # Your frontend URL
+   # 'http://13.60.211.71:3000',
+    'http://16.171.33.87:3000',
+]
+
+# CSRF_TRUSTED_ORIGINS = [
+#     'http://localhost:3000',
+#     'https://a9f3-102-88-83-178.ngrok-free.app',
+#     'https://code-rx-study-assistant.vercel.app',
+# ]
+CORS_ALLOW_HEADERS = [
+    'authorization',
+    'content-type',  # Ensure content-type is allowed for POST requests
+    'x-csrftoken',   # If you're using CSRF tokens in Django
+    'x-requested-with',
+    'x-session-id',  # Include other headers as needed
+    'accept',        # Typically necessary
+    'origin',
+    'accept-encoding',
+    'accept-language',
+    'cache-control',
+]
 
 ROOT_URLCONF = 'StudyAssistant.urls'
 
@@ -139,9 +163,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
-        'rest_framework.renderers.BrowsableAPIRenderer',  # This must be included
-        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.renderers.BrowsableAPIRenderer',
     ),
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
     'DEFAULT_PARSER_CLASSES': (
         'rest_framework.parsers.JSONParser',
         'rest_framework.parsers.MultiPartParser',  # Support for file uploads

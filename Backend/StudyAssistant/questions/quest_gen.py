@@ -16,6 +16,7 @@ def generate_exam_questions(input_text, domain):
         f"Your task is to generate {question_type} questions based on the provided text. "
         f"Generate as many questions as possible in the following JSON format:\n"
         f'{{"1": {{"question": "<question_text_1>", "options": {{"A": "<option_A_1>", "B": "<option_B_1>", "C": "<option_C_1>", "D": "<option_D_1>"}}, "correct_answer": "<correct_option_1>"}}}}'
+        f'And store them in a list. Do not add any other text to your response'
         f"Generate as much questions as possible. "
         f"The questions should exhaust all key facts and cover all important concepts presented in the text. "
         f"Include {question_type} scenarios that reflect real-world applications of the concepts. "
@@ -31,15 +32,13 @@ def generate_exam_questions(input_text, domain):
                 "content": prompt
             }
         ],
-        model="llama-3.1-70b-versatile",  # Specify the model you want to use
-        response_format={"type": "json_object"},
+        model="llama-3.1-70b-versatile",  # Ensure the model name is valid
         temperature=1,
-        # max_tokens=5500
     )
     
     # Extract the generated questions from the response as a string
     generated_questions_str = chat_completion.choices[0].message.content
-    
+
     # Convert the string to JSON
     try:
         generated_questions_json = json.loads(generated_questions_str)
