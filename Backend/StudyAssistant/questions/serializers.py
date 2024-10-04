@@ -8,4 +8,4 @@ class PDFUploadSerializer(serializers.Serializer):
 class UploadedFileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UploadedFile
-        fields = ['id', 'question_name', 'category', 'date_created']
+        fields = ['id', 'question_name', 'category', 'date_created', 'score']
