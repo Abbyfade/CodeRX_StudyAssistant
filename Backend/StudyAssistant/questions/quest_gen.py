@@ -10,33 +10,22 @@ def generate_exam_questions(input_text, domain, question_type):
     client = Groq(api_key=os.getenv("GROQ_API_KEY"))
     # question_type = "Multiple choice questions"
 
-    # options = (
-    #     f'{{"A": "<option_A>", "B": "<option_B>", "C": "<option_C>", "D": "<option_D>"}}'
-    #     if question_type == "mcq" else
-    #     f'{{"T": "True", "F": "False"}}'
-    # )
-
-    # correct_answer = (
-    #     f'"<correct_option>"' if question_type == "mcq" else '"True" or "False"'  # Use the appropriate format for True/False
-    # )
-
     options = (
-        '{"A": "<option_A>", "B": "<option_B>", "C": "<option_C>", "D": "<option_D>"}'
+        {"A": "<option_A>", "B": "<option_B>", "C": "<option_C>", "D": "<option_D>"}
         if question_type == "mcq" else
-        '{"T": "True", "F": "False"}'
+        {"T": "True", "F": "False"}
     )
 
-    correct_answer = '"<correct_option>"' if question_type == "mcq" else '"True" or "False"'
-
+    correct_answer = (
+        "<correct_option>" if question_type == "mcq" else "True or False"  # Use the appropriate format for True/False
+    )
     
     # Define the prompt with placeholders for input_text, domain, and question_type
     prompt = (
         f"You are an expert exam question creator in the field of {domain}, specializing in crafting questions for students. "
         f"Your task is to generate {question_type} questions based on the provided text. "
         f"Generate as many questions as possible in the following JSON format:\n"
-        f"Here is an example format:\n"
-        f'{{"1": {{"question": "<question_text_1>", "options": {options}, "correct_answer": {correct_answer}}},'
-        f' "2": {{"question": "<question_text_2>", "options": {options}, "correct_answer": {correct_answer}}}}}\n\n'
+        f'{{"1": {{"question": "<question_text_1>", "options": {options}, "correct_answer": {correct_answer}}}}}\n'
         f'Put all the questions generated in a single json separated by a comma'
         f"Do not add any other text to your response. "
         f"Generate as many questions as possible. "
