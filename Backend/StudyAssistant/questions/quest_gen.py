@@ -26,6 +26,7 @@ def generate_exam_questions(input_text, domain, question_type):
         f"Your task is to generate {question_type} questions based on the provided text. "
         f"Generate as many questions as possible in the following JSON format:\n"
         f'{{"1": {{"question": "<question_text_1>", "options": {options}, "correct_answer": {correct_answer}}}}}\n'
+        f'Put all the questions generated in a single json separated by a comma'
         f"Do not add any other text to your response. "
         f"Generate as many questions as possible. "
         f"The questions should exhaust all key facts and cover all important concepts presented in the text. "
