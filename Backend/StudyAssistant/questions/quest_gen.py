@@ -49,7 +49,6 @@ def generate_exam_questions(input_text, domain, question_type):
     
     # Extract the generated questions from the response as a string
     generated_questions_str = chat_completion.choices[0].message.content
-    print(generated_questions_str)
 
     # Convert the string to JSON
     try:
