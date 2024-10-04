@@ -13,7 +13,7 @@ class UploadedFile(models.Model):
     extracted_text = models.TextField()
     generated_questions = models.JSONField(null=True, blank=True)
     answers = models.JSONField(null=True, blank=True)
-    score = models.IntegerField(null=True, blank=True)
+    score = models.CharField(max_length=255, null=True, blank=True)
     
     def __str__(self):
         return self.file_name
