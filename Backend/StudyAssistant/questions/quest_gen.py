@@ -22,20 +22,18 @@ def generate_exam_questions(input_text, domain, question_type):
     
     # Define the prompt with placeholders for input_text, domain, and question_type
     prompt = (
-    f"You are an expert exam question creator in the field of {domain}, specializing in crafting questions for students. "
-    f"Your task is to generate {question_type} questions based on the provided text. "
-    f"Generate as many questions as possible in the following JSON format:\n"
-    f'{{\n'
-    f'  "questions": [\n'
-    f'    {{"question": "<question_text>", "options": {options}, "correct_answer": "<correct_option>"}}}\n'
-    f'  ]\n'
-    f'}}\n'
-    f"Do not add any other text to your response, just return this JSON structure. "
-    f"The questions should exhaust all key facts and cover all important concepts presented in the text. "
-    f"Include {question_type} scenarios that reflect real-world applications of the concepts. "
-    f"The {question_type} should assess higher-order thinking skills and critical reasoning abilities relevant to the subject matter.\n\n"
-    f"Text: {input_text}"
-)
+        f"You are an expert exam question creator in the field of {domain}, specializing in crafting questions for students. "
+        f"Your task is to generate {question_type} questions based on the provided text. "
+        f"Generate as many questions as possible in the following JSON format:\n"
+        f'{{"1": {{"question": "<question_text_1>", "options": {options}, "correct_answer": {correct_answer}}}}}\n'
+        f'Put all the questions generated in a single json separated by a comma. make sure that each question generated will have the number as the key and the other values as the value just as provided above.'
+        f"Do not add any other text to your response. "
+        f"Generate as many questions as possible. "
+        f"The questions should exhaust all key facts and cover all important concepts presented in the text. "
+        f"Include {question_type} scenarios that reflect real-world applications of the concepts. "
+        f"The {question_type} should assess higher-order thinking skills, critical reasoning abilities relevant to the subject matter and the student's understanding of the subject matter.\n\n"
+        f"Text: {input_text}"
+    )
     # Create a chat completion request to generate questions
     chat_completion = client.chat.completions.create(
         messages=[
