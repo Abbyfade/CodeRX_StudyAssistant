@@ -49,7 +49,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -59,15 +59,27 @@ MIDDLEWARE = [
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # Your frontend URL
-    "http://192.168.197.14:3000",
+   # 'http://13.60.211.71:3000',
+    'http://16.171.33.87:3000',
 ]
 
-CSRF_TRUSTED_ORIGINS = [
-    'http://localhost:3000',
-    'http://192.168.197.14:3000',
+# CSRF_TRUSTED_ORIGINS = [
+#     'http://localhost:3000',
+#     'https://a9f3-102-88-83-178.ngrok-free.app',
+#     'https://code-rx-study-assistant.vercel.app',
+# ]
+CORS_ALLOW_HEADERS = [
+    'authorization',
+    'content-type',  # Ensure content-type is allowed for POST requests
+    'x-csrftoken',   # If you're using CSRF tokens in Django
+    'x-requested-with',
+    'x-session-id',  # Include other headers as needed
+    'accept',        # Typically necessary
+    'origin',
+    'accept-encoding',
+    'accept-language',
+    'cache-control',
 ]
-# CSRF_COOKIE_NAME = "csrftoken"  # Default name for CSRF cookie
-# CSRF_HEADER_NAME = "X-CSRFToken"  # Header name for CSRF token
 
 ROOT_URLCONF = 'StudyAssistant.urls'
 

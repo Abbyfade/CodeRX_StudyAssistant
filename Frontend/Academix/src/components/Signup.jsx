@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import xbutton from '../assets/xbutton.png'
 import axios from 'axios'
 
@@ -42,6 +42,8 @@ export const Signup = () => {
         setEmail(e.target.value)
     }
 
+    const navigate = useNavigate()
+
     //Details from the form to be submitted
     const userInfo = {
         first_name: name,
@@ -50,27 +52,25 @@ export const Signup = () => {
         email: email,
         password: password,
     }
-
-    const url = 'http://127.0.0.1:8000/api/register/'
+    const url = 'http://16.171.33.87:8000/api/register/'
 
 
     const handleSubmit = async (event) => {
         event.preventDefault()
         try {
-            console.log(userInfo);
+            const response = await axios.post(url, userInfo)
+            if(response.status === 201) {navigate('/login')}
             
-            const response = await axios.post(url, userInfo);
-            console.log(response);
-            
+
         } catch (error) {
-            console.log(error);
+            console.log(error.status);
         }
     }
 
   return (
     //Page Content
-    <div className='flex items-center justify-center mx-auto h-screen w-screen py-4'>
-        <div className='w-[60%] mx-auto bg-white shadow-[0_4px_50px_1px_rgba(0,0,0,0.25)] px-16 py-6 text-left items-center rounded-lg'>
+    <div className='flex flex-wrap md:flex-nowrap items-center justify-center mx-auto h-screen w-screen py-4'>
+        <div className='md:w-[60%] w-[95%] mx-auto bg-white shadow-[0_4px_50px_1px_rgba(0,0,0,0.25)] md:px-16 px-8 py-6 text-left items-center rounded-lg'>
             <div className='text-5xl font-semibold flex justify-between'>
                 <h2>Register</h2>
                 <div><Link to='/'><img src={xbutton} alt="" /></Link></div>
@@ -80,7 +80,7 @@ export const Signup = () => {
                     <input autoFocus className='mt-12 border-b-[1px] border-b-black border-solid outline-none py-[10px] w-full' type="text" name="name" id="name" placeholder='Name' value={name} onChange={handleName} />
                 </div>
                 <div>
-                    <input className='mt-8 border-b-[1px] border-b-black border-solid outline-none py-[10px] w-full' type="text" name="phone" id='phone' placeholder='lastname' value={last_name} onChange={handleLastName}/>
+                    <input className='mt-8 border-b-[1px] border-b-black border-solid outline-none py-[10px] w-full' type="text" name="last name" id='last name' placeholder='lastname' value={last_name} onChange={handleLastName}/>
                 </div>
 
                 <div>
