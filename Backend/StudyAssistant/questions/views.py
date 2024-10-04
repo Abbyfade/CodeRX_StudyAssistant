@@ -60,6 +60,7 @@ class GenerateQuestionsView(APIView):
         question_name = request.data.get('question_name')
         input_text = request.data.get('extracted_text')
         domain = request.data.get('category')
+        question_type = request.data.get('question_type')
         # try:
         #     uploaded_file = UploadedFile.objects.get(id=file_id, user=request.user)
             
@@ -77,12 +78,13 @@ class GenerateQuestionsView(APIView):
         
         # except UploadedFile.DoesNotExist:
         #     return Response({"error": "File not found"}, status=status.HTTP_404_NOT_FOUND)
-        generated_questions = generate_exam_questions(input_text, domain)
+        generated_questions = generate_exam_questions(input_text, domain, question_type)
         uploaded_file = UploadedFile.objects.create(
                 user=request.user,
                 file_name=file_name,
                 question_name=question_name,
                 category=domain,
+                question_type=question_type,
                 date_created=timezone.now(),
                 extracted_text=input_text,
                 generated_questions=generated_questions
@@ -109,4 +111,32 @@ class QuestionDetailView(APIView):
         question = UploadedFile.objects.get(id=file_id)
         question_name= question.question_name
         question_detail = question.generated_questions
-        return Response({'question_name': question_name, 'question_detail': question_detail})
+        question_type = question.question_type
+        
+        return Response({'question_name': question_name, 'question_detail': question_detail, 'question_type': question_type})
+
+class QuestionAnswersView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        file_id = request.data.get('file_id')
+        answers = request.data.get('answers')
+        score = request.data.get('score')
+        question = UploadedFile.objects.get(id=file_id)
+        question.answers = answers
+        question.score = score
+
+        question.save()
+
+        return Response({"message": "Answers saved successfully"}, status=status.HTTP_200_OK)
+
+class AnswersView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        file_id = request.data.get('file_id')
+        question = UploadedFile.objects.get(id=file_id)
+        answers = question.answers
+        score = question.score
+
+        return Response({"answers": answers, "score": score} , status=status.HTTP_200_OK)
