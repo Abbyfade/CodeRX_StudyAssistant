@@ -69,7 +69,7 @@ export const Sidenav = () => {
 
           <div className="flex items-center gap-4 px-10 text-xl text-[#313131] border-opacity-20 py-5 border-b border-solid border-[#313131]">
             <img className="w-5 h-5" src={users} alt="Users" />
-            <p>Friends</p>
+            <p>Friends <span className='text-xs bg-red-300 px-1 rounded'>Soon</span></p>
           </div>
           
           <NavLink to="assess" style={navLinkStyles} className="flex items-center gap-4 px-10 text-xl text-[#313131] border-opacity-20 py-5 border-b border-solid border-[#313131]">

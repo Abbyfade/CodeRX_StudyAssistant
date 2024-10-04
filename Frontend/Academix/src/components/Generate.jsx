@@ -16,11 +16,10 @@ export const Generate = () => {
   const [isGenerating, setIsGenerating] = useState(false); // For the "Questions are being generated" popup
   const [uploadProgress, setUploadProgress] = useState(0); //progress bar during file upload
   const [isUploading, setIsUploading] = useState(false); // Display progress bar or not
+  const [questionType, setQuestionType] = useState('mcq'); // Add state for question type
 
   const navigate = useNavigate();
   const { user, setSidebarOpen } = useOutletContext()
-
-  console.log(user);
 
   // Handle Selected file
   const handleFileChange = (event) => {
@@ -53,6 +52,10 @@ export const Generate = () => {
 
   const handleQuestionName = (e) => {
     setQuestionName(e.target.value);
+  };
+
+  const handleQuestionTypeChange = (e) => {
+    setQuestionType(e.target.value); // Update question type based on radio selection
   };
 
   const uploadurl = 'http://16.171.33.87:8000/api/upload_pdf/';
@@ -99,6 +102,7 @@ export const Generate = () => {
           question_name: questionName,
           extracted_text: previewData,
           category: selectedOption.label,
+          question_type:questionType
         }, {
           withCredentials: true,
           headers: {
@@ -212,6 +216,20 @@ export const Generate = () => {
           {/* Specialty Dropdown */}
           <div className='lg:w-10/12 lg:ml-12 shadow-select mt-4'>
             <Select value={selectedOption} onChange={handleChange} options={specialties} placeholder="Select question specialty" isSearchable={true} />
+          </div>
+          {/* Question Type Selection */}
+          <div className="lg:w-10/12 lg:ml-12 mt-4 flex gap-6 items-center">
+            <p className="text-base md:text-lg font-semibold">Question style:</p>
+            <div className="flex gap-6">
+              <label className='text-base'>
+                <input type="radio" value="mcq" checked={questionType === 'mcq'} onChange={handleQuestionTypeChange} className="mr-2"/>
+                McQ
+              </label>
+              <label className='text-base'>
+                <input type="radio" value="tof" checked={questionType === 'tof'} onChange={handleQuestionTypeChange} className="mr-2"/>
+                True/False
+              </label>
+            </div>
           </div>
 
           <div className='flex justify-end gap-8 lg:w-10/12 lg:ml-12 mt-6'>
