@@ -8,15 +8,17 @@ export const QuestionDetail = () => {
   const [showAnswer, setShowAnswer] = useState({}); // State to toggle answer visibility for each question
   const [loading, setLoading] = useState(true); // Track loading state
   const [error, setError] = useState(null); // Track errors
-  const [questionName, setQuestionName] = useState('');
-  const [questionType, setQuestionType] = useState(''); // Store cleaned question type
+  const [questionName, setQuestionName] = useState(''); // Store the question name
+  const [questionType, setQuestionType] = useState(''); // Store the question type
 
   const params = useParams();
   const { setSidebarOpen, user } = useOutletContext();
   const fileId = params.fileId;
 
+  // API endpoint for fetching question details
   const questiondetailsurl = `http://16.171.33.87:8000/api/question_detail/${fileId}`;
 
+  // Function to fetch question details
   const questionDetails = async () => {
     setLoading(true); // Start loading before the request
     setError(null); // Clear previous errors
@@ -31,18 +33,16 @@ export const QuestionDetail = () => {
       const { question_detail, question_name, question_type } = response.data;
 
       // Convert question_detail to array if it's an object (for True/False questions)
-      const isObject = typeof question_detail === 'object' && !Array.isArray(question_detail);
-      const parsedQuestions = isObject ? Object.keys(question_detail).map(key => ({ [key]: question_detail[key] })) : question_detail;
+      const parsedQuestions = Object.keys(question_detail).map((key) => ({
+        [key]: question_detail[key],
+      }));
 
-      setQuestionsData(parsedQuestions); // Set questions data (array format)
-      setQuestionName(question_name); // Set question name
-
-      // Clean question_type to remove extra quotes and backslashes
-      const cleanQuestionType = question_type.replace(/['"\\]/g, '');
-      setQuestionType(cleanQuestionType); // Set cleaned question type
+      setQuestionsData(parsedQuestions); // Store the parsed questions
+      setQuestionName(question_name); // Set the question name
+      setQuestionType(question_type); // Set the question type
     } catch (error) {
       console.error('Error fetching question details:', error);
-      setError('Failed to load question details'); // Set error message
+      setError('Failed to load question details');
     } finally {
       setLoading(false); // Stop loading after the request completes
     }
@@ -73,10 +73,22 @@ export const QuestionDetail = () => {
       <div className="sticky top-0 bg-white py-2 shadow-md lg:shadow-none flex justify-between lg:justify-end items-center">
         {/* Left Side */}
         <div className="lg:hidden" onClick={() => setSidebarOpen(true)}>
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 5.25h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M3.75 5.25h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5"
+            />
           </svg>
         </div>
+
         {/* Right Side */}
         <div className="flex justify-center items-center gap-4">
           <div className="flex items-center gap-2 bg-[#DAF2FF] w-fit py-2 px-2 rounded-2xl text-base lg:text-xl font-semibold">
@@ -84,7 +96,10 @@ export const QuestionDetail = () => {
             <p>{user}</p>
           </div>
           <div>
-            <NavLink to="/user/generate" className="py-2 px-2 bg-[#0E2633] text-white rounded-xl text-base md:text-xl lg:text-2xl">
+            <NavLink
+              to="/user/generate"
+              className="py-2 px-2 bg-[#0E2633] text-white rounded-xl text-base md:text-xl lg:text-2xl"
+            >
               Generate
             </NavLink>
           </div>
@@ -105,15 +120,16 @@ export const QuestionDetail = () => {
               {index + 1}. {questionData.question}
             </h3>
 
-            {/* Conditional rendering for MCQ or True/False */}
-            {questionType === 'tof' ? (
+            {/* Conditional rendering for True/False or MCQ */}
+            {questionType === 'true or false' ? (
               // True/False Options
               <ul className="list-none pl-4">
-                {Object.entries(questionData.options).map(([optionKey, optionValue]) => (
-                  <li key={optionKey} className="mb-2">
-                    <span className="font-semibold">{optionKey === 'T' ? 'True' : 'False'}.</span> {optionValue}
-                  </li>
-                ))}
+                <li className="mb-2">
+                  <span className="font-semibold">T.</span> True
+                </li>
+                <li className="mb-2">
+                  <span className="font-semibold">F.</span> False
+                </li>
               </ul>
             ) : (
               // MCQ Options
